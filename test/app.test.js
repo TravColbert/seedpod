@@ -114,7 +114,7 @@ tape("Responds with HTML file", (t) => {
         .get("/page")
         .expect(
           200,
-          '<!DOCTYPE html>\n<html lang="en">\n  <body>\n    A plain HTML page.\n  </body>\n</html>\n',
+          '<!DOCTYPE html>\n<html lang="en">\n  <body>\n    Hello World!\n  </body>\n</html>\n',
         )
         .end((err, res) => {
           if (err) {
