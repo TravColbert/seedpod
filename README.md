@@ -1,4 +1,24 @@
-# Running Your Application
+# Seedpod
+
+- [What is Seedpod?](#what-is-seedpod)
+- [Installation](#installation)
+- [Running](#running)
+- [Documentation](#documentation)
+- [Getting Help](#getting-help)
+- [Contributing](#contributing)
+
+## What is Seedpod?
+
+Seedpod is a modest, no-magic Javascript web framework that prioritizes clarity, simplicity and a return to low-complexity web applications. It is small, fast and flexible.
+
+## Installation
+
+```sh
+git clone git@github.com:TravColbert/node-express-starter.git
+npm install
+```
+
+## Running
 
 You can run your application locally for development using several ways:
 
@@ -7,7 +27,7 @@ You can run your application locally for development using several ways:
 3. **Docker**
 4. **Docker Compose**.
 
-## Node
+### Node
 
 The most direct way is to run your application directly **node**:
 
@@ -15,27 +35,27 @@ The most direct way is to run your application directly **node**:
 node server
 ```
 
-## NPM
+### NPM
 
 There are also several **npm run command**s available:
 
-### Run the server with no restarts
+#### Run the server with no restarts
 
 ```
 npm run start
 ```
 
-### Run the server and restart when changes are detected
+#### Run the server and restart when changes are detected
 
 ```
 npm run dev
 ```
 
-## Docker
+### Docker
 
 You can run your application in Docker by:
 
-### Building a Docker Image
+#### Building a Docker Image
 
 First, we build a fresh image that we can run or inspect later:
 
@@ -43,7 +63,7 @@ First, we build a fresh image that we can run or inspect later:
 docker build \
 --build-arg APP_TOKEN=[token] \
 --build-arg APP_RELEASE=[tag] \
---build-arg APP_REPO=[url] 
+--build-arg APP_REPO=[url]
 --no-cache -t [name] ./
 ```
 
@@ -62,20 +82,20 @@ First, define APP_TOKEN, APP_LIST, etc. in an .env file, then:
 docker compose up --build
 ```
 
-### Running the Container
+#### Running the Container
 
-Secondly, use this command to run the container: 
+Secondly, use this command to run the container:
 
 ```
 # To run the container
-docker run -p 8080:8080 [name] 
+docker run -p 8080:8080 [name]
 ```
 
 Where
 
-- [name] : the name of the image in the *build* step, above.
+- [name] : the name of the image in the _build_ step, above.
 
-### Inspecting the Container
+#### Inspecting the Container
 
 You can also inspect the inside of the container. This is especially useful if you are developing:
 
@@ -84,13 +104,13 @@ You can also inspect the inside of the container. This is especially useful if y
 docker run -it --entrypoint /bin/sh [name]
 ```
 
-Where: 
+Where:
 
-- [name] : the name of the image in the *build* step, above.
+- [name] : the name of the image in the _build_ step, above.
 
-## Docker Compose
+### Docker Compose
 
-You can also use **Docker Compose** to build and run the app. 
+You can also use **Docker Compose** to build and run the app.
 
 Two extra things are required (and included) to start your app using Docker Composer:
 
@@ -106,11 +126,12 @@ APP_TOKEN=[token]
 ```
 
 The above `.env` simply specifies:
+
 1. the application module's Git repo [url]
 1. the data-access token (if required) [token]
 1. the release [tag]
 
-### Building and running your application using Docker Compose
+#### Building and running your application using Docker Compose
 
 When you're ready, start your application by running:
 
