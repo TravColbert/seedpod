@@ -19,6 +19,7 @@ module.exports = function (app) {
   const appInstances = [
     ...new Set([...app.locals.appList.split(","), "app_base"]),
   ];
+
   /**
    * Dynamically load all routers from each app instance
    * Also include the 'app_base' instance for default/shared routes
@@ -67,7 +68,15 @@ module.exports = function (app) {
   }
 
   /**
-   * Mount the index router
+   * Mount the "index" router at '/'.
+   *
+   * All the routers above are mounted to a route that matches the name of the
+   * route file. e.g.: settings.js will mount and respond to the /settings path.
+   *
+   * But, we need to make a small exception to this rule for the '/' path. We
+   * purposely skipped mounting any 'index.js' routes, above, for this reason.
+   * So, in this case, index.js is mounted to the '/' path.
+   *
    * This is the default router that handles the root path
    * The default router will be the first app instance with a router folder
    * and an index.js file
