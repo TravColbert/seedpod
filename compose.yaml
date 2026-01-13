@@ -12,7 +12,6 @@ services:
     build:
       context: .
       args:
-        # - APP_TOKEN=${APP_TOKEN:-bogus}
         - APP_LIST=${APP_LIST:-app}
         - APP_RELEASE=${APP_RELEASE:-latest}
         - APP_REPO=${APP_REPO:-https://github.com/TravColbert/node-express-starter-app-demo.git}
