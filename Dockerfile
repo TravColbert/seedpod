@@ -20,7 +20,7 @@ RUN sh ./jobs/job.sh $APP_SOURCE_REPO
 FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /app
 COPY --from=app /app .
-RUN npm ci --omit=dev
+RUN npm i --omit=dev
 
 # The base layer stage
 FROM node:${NODE_VERSION}-alpine
