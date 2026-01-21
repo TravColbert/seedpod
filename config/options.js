@@ -93,7 +93,7 @@ module.exports = function (app, explicitConfig) {
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
-        scriptSrcElem: ["'self'"],
+        scriptSrcElem: ["'self'", "https://unpkg.com/htmx.org@2.0.4"],
         styleSrc: ["'self'"],
         styleSrcElem: ["'self'"],
         imgSrc: ["'self'", "data:"],

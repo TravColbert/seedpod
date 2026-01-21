@@ -11,7 +11,6 @@ const testConfig = {
 tape("GET / responds with 200 and Hello World!", (t) => {
   appFactory(testConfig)
     .then((app) => {
-      // Add a simple route for testing if not present
       supertest(app)
         .get("/")
         .expect(200, "Hello World!") // Responds with the ultra-fallback success response
@@ -28,7 +27,6 @@ tape("GET / responds with 200 and Hello World!", (t) => {
 tape("GET /bogus responds with 404", (t) => {
   appFactory(testConfig)
     .then((app) => {
-      // Add a simple route for testing if not present
       supertest(app)
         .get("/bogus")
         .expect(404)
@@ -45,10 +43,9 @@ tape("GET /bogus responds with 404", (t) => {
 tape("Set BASE_PATH reaches test app", (t) => {
   appFactory(testConfig)
     .then((app) => {
-      // Add a simple route for testing if not present
       supertest(app)
         .get("/test")
-        .expect(200, "TESTING 1... 2... 3!")
+        .expect(200, "TESTING World!")
         .end((err, res) => {
           if (err) {
             t.error(err, "Got error: " + err);
@@ -64,7 +61,7 @@ tape("A templates at any depth", (t) => {
     .then((app) => {
       supertest(app)
         .get("/deeper/path")
-        .expect(200, "DEEPER PATH")
+        .expect(200, "DEEPER World")
         .end((err, res) => {
           if (err) {
             t.error(err, "Got error: " + err);
@@ -95,10 +92,48 @@ tape("Dot (.) paths work for includes", (t) => {
   appFactory(testConfig)
     .then((app) => {
       supertest(app)
+        .get("/pug")
+        .expect(
+          200,
+          '<!DOCTYPE html><html lang="en"><body>Hello World!<p>But we can get to this text directly.</p></body></html>',
+        )
+        .end((err, res) => {
+          if (err) {
+            t.error(err, "Got error: " + err);
+          }
+          t.end();
+        });
+    })
+    .catch((err) => t.fail(err));
+});
+
+tape("Responds with HTML file", (t) => {
+  appFactory(testConfig)
+    .then((app) => {
+      supertest(app)
         .get("/page")
         .expect(
           200,
-          '<!DOCTYPE html><html lang="en"><body><p>We can\'t get here through a direct request</p><p>But we can get to this text directly.</p></body></html>',
+          '<!DOCTYPE html>\n<html lang="en">\n  <body>\n    Hello World!\n  </body>\n</html>\n',
+        )
+        .end((err, res) => {
+          if (err) {
+            t.error(err, "Got error: " + err);
+          }
+          t.end();
+        });
+    })
+    .catch((err) => t.fail(err));
+});
+
+tape("Responds with JS-generated result", (t) => {
+  appFactory(testConfig)
+    .then((app) => {
+      supertest(app)
+        .get("/script")
+        .expect(
+          200,
+          '<!DOCTYPE html>\n<html lang="en">\n  <body>\n    Hello World!\n  </body>\n</html>\n',
         )
         .end((err, res) => {
           if (err) {
