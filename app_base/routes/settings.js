@@ -1,7 +1,8 @@
 const express = require("express")
-const router = express.Router({ mergeParams: true })
 
 module.exports = function (app) {
+    const router = express.Router({ mergeParams: true })
+
     // Turn off this route in production
     if (app.locals.nodeEnv === "production") return router
 
@@ -30,8 +31,11 @@ module.exports = function (app) {
     }
 
     router.route("/routes")
-        .get((_req, res) => {
+        .get((req, res) => {
             app.locals.debug && console.debug("Got request for routes")
+            if (!isAuthorized(req)) {
+                return res.status(403).json({ error: "Access denied" });
+            }
             res.json(app._router.stack)
         })
 
