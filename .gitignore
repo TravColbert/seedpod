@@ -16,3 +16,5 @@ coverage
 tls/
 database/*.sqlite
 config/*.json
+CLAUDE.md
+TODO.md
