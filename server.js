@@ -6,6 +6,18 @@ const appFactory = require("./app");
 
 let config = null;
 
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit(1);
+});
+
+// Handle uncaught exceptions
+process.on("uncaughtException", (err) => {
+    console.error("Uncaught Exception:", err);
+    process.exit(1);
+});
+
 // Get optional JSON string from command line argument
 if (process.argv[2]) {
     try {
@@ -28,6 +40,7 @@ appFactory(config).then((app) => {
             })
             .catch((err) => {
                 console.error("Error synchronizing database:", err);
+                process.exit(1); // Exit if database sync fails
             });
     }
 
