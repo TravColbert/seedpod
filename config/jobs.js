@@ -61,8 +61,13 @@ module.exports = function (app) {
         .filter((file) => file.endsWith(".js"));
 
       jobFiles.forEach((file) => {
-        // Load each job file passing the app instance to it
-        require(path.join(jobPath, file))(app);
+        const jobName = path.parse(file).name;
+        try {
+          // Load each job file passing the app instance to it
+          require(path.join(jobPath, file))(app);
+        } catch (e) {
+          console.error(`Error loading job ${jobName} from ${file}:`, e);
+        }
       });
     }
   }
