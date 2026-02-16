@@ -54,12 +54,16 @@ module.exports = function (app) {
       routerFiles.forEach((file) => {
         const routeName = path.parse(file).name;
         app.locals.debug && console.debug(`ℹ️  Mounting router: ${routeName}`);
-        const router = require(path.join(routerPath, file))(
-          app,
-          appInstance.trim(),
-        );
-        // The name of the route is the same as the file name
-        app.use(`/${routeName}`, router);
+        try {
+          const router = require(path.join(routerPath, file))(
+            app,
+            appInstance.trim(),
+          );
+          // The name of the route is the same as the file name
+          app.use(`/${routeName}`, router);
+        } catch (e) {
+          console.error(`Error loading router ${routeName} from ${file}:`, e);
+        }
       });
     } else {
       app.locals.debug &&
@@ -95,9 +99,13 @@ module.exports = function (app) {
         console.debug(
           `ℹ️  Mounting index(/) route from ${appInstance.trim()} `,
         );
-      const indexRouter = require(routerPath)(app, appInstance.trim());
-      app.use("/", indexRouter);
-      break;
+      try {
+        const indexRouter = require(routerPath)(app, appInstance.trim());
+        app.use("/", indexRouter);
+        break;
+      } catch (e) {
+        console.error(`Error loading index router from ${routerPath}:`, e);
+      }
     }
   }
 
