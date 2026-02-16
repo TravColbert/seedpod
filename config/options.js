@@ -87,6 +87,7 @@ module.exports = function (app, explicitConfig) {
     false,
   );
   app.locals.databaseConfig = getConfigValue("DATABASE_CONFIG", false, false);
+  app.locals.settingsToken = getConfigValue("SETTINGS_TOKEN", false, false);
   app.locals.contentSecurityPolicy = getConfigValue(
     "CSP",
     {
