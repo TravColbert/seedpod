@@ -6,7 +6,7 @@ module.exports = function (app) {
     if (app.locals.nodeEnv === "production") return router
 
     const safeKeys = [
-        "nodeEnv", "debug", "httpOn", "https-on", "portHttp",
+        "nodeEnv", "debug", "httpOn", "httpsOn", "portHttp",
         "portHttps", "noCompression", "rateLimitFifteenMinuteWindow", "cacheTtl",
         "lang", "appList", "appName", "appDescription", "appKeywords",
         "contentSecurityPolicy"
@@ -22,7 +22,7 @@ module.exports = function (app) {
     const filterSettings = (settings) => {
         const filtered = {};
         for (const key of safeKeys) {
-            if (settings.hasOwnProperty(key)) {
+            if (Object.hasOwn(settings, key)) {
                 filtered[key] = settings[key];
             }
         }
@@ -45,12 +45,12 @@ module.exports = function (app) {
                 return res.status(403).json({ error: "Access denied" });
             }
 
-            if (safeKeys.includes(key) && app.locals.hasOwnProperty(key)) {
+            if (safeKeys.includes(key) && Object.hasOwn(app.locals, key)) {
                 return res.json(app.locals[key])
             }
 
             if (isAuthorized(req)) {
-                 if (app.locals.hasOwnProperty(key)) {
+                if (Object.hasOwn(app.locals, key)) {
                     return res.json(app.locals[key])
                 }
             }
