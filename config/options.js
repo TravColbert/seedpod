@@ -86,6 +86,16 @@ module.exports = function (app, explicitConfig) {
     "you should really change this",
     false,
   );
+  if (
+    app.locals.nodeEnv === "production" &&
+    app.locals.sessionSecret === "you should really change this"
+  ) {
+    console.warn(
+      "🚨 WARNING: Default session secret is in use in production environment. 🚨\\n" +
+        "For security reasons, this should be changed.\\n" +
+        "Set the SESSION_SECRET environment variable to a long, random string.",
+    );
+  }
   app.locals.databaseConfig = getConfigValue("DATABASE_CONFIG", false, false);
   app.locals.settingsToken = getConfigValue("SETTINGS_TOKEN", false, false);
   app.locals.contentSecurityPolicy = getConfigValue(
