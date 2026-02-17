@@ -9,6 +9,7 @@ app/
 app_*/
 !app_demo/
 !app_base/
+!app_test/
 *.notinuse
 .nyc_output
 coverage
