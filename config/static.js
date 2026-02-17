@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 
 module.exports = function (app) {
-  for (appInstance of app.locals.appList.split(",")) {
+  for (const appInstance of app.locals.appList.split(",")) {
     const location = path.join(
       __dirname,
       "..",
