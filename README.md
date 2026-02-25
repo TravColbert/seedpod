@@ -28,6 +28,14 @@ cd seedpod
 npm install
 ```
 
+### Generate server.key and .cert for TLS
+
+If you want to enable **http** you can generate some TLS keys by:
+
+```
+npm run generate-tls
+```
+
 ## Running
 
 You can run your application locally for development using several ways:
