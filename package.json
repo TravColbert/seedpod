@@ -10,7 +10,8 @@
     "start": "node server.js",
     "demo": "node server.js '{\"DEBUG\": true, \"APP_LIST\": \"app_demo\"}'",
     "dev": "nodemon server.js '{\"DEBUG\": true}'",
-    "test": "nyc tape 'test/**/*.js'"
+    "test": "nyc tape 'test/**/*.js'",
+    "generate-tls": "bash tls/generate-cert.sh"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
