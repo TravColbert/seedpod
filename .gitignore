@@ -13,7 +13,8 @@ app_*/
 .nyc_output
 coverage
 .idea/
-tls/
+tls/*.key
+tls/*.cert
 database/*.sqlite
 config/*.json
 CLAUDE.md
