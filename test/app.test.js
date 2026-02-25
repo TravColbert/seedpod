@@ -1,34 +1,20 @@
 const tape = require("tape");
 const supertest = require("supertest");
 const appFactory = require("../app");
-const testConfig = {
+const testAConfig = {
   IMPORT_ENV: false, // Do not import from .env file through the dotenv package
   NODE_ENV: "test",
   BASE_PATH: "test",
-  APP_LIST: "app_test",
+  APP_LIST: "app_test_a",
 };
 
-tape("GET / responds with 200 and Hello World!", (t) => {
-  appFactory(testConfig)
+const testBConfig = { ...testAConfig, APP_LIST: "app_test_b" };
+
+tape("GET / on unconfigured app responds with 404", (t) => {
+  appFactory(testAConfig)
     .then((app) => {
       supertest(app)
         .get("/")
-        .expect(200, "Hello World!") // Responds with the ultra-fallback success response
-        .end((err, res) => {
-          if (err) {
-            t.error(err, "Got error: " + err);
-          }
-          t.end();
-        });
-    })
-    .catch((err) => t.fail(err));
-});
-
-tape("GET /bogus responds with 404", (t) => {
-  appFactory(testConfig)
-    .then((app) => {
-      supertest(app)
-        .get("/bogus")
         .expect(404)
         .end((err, res) => {
           if (err) {
@@ -40,12 +26,62 @@ tape("GET /bogus responds with 404", (t) => {
     .catch((err) => t.fail(err));
 });
 
-tape("Set BASE_PATH reaches test app", (t) => {
-  appFactory(testConfig)
+tape("GET non-existent route responds with 404", (t) => {
+  appFactory(testAConfig)
     .then((app) => {
       supertest(app)
         .get("/test")
-        .expect(200, "TESTING World!")
+        .expect(404)
+        .end((err, res) => {
+          if (err) {
+            t.error(err, "Got error: " + err);
+          }
+          t.end();
+        });
+    })
+    .catch((err) => t.fail(err));
+});
+
+tape("GET / on app with index.pug template responds with 200", (t) => {
+  appFactory(testBConfig)
+    .then((app) => {
+      supertest(app)
+        .get("/")
+        .expect(200, "Hello !")
+        .end((err, res) => {
+          if (err) {
+            t.error(err, "Got error: " + err);
+          }
+          t.end();
+        });
+    })
+    .catch((err) => t.fail(err));
+});
+
+tape("GET / with query params responds with 200", (t) => {
+  appFactory(testBConfig)
+    .then((app) => {
+      supertest(app)
+        .get("/")
+        .query({ thing: "World" })
+        .expect(200, "Hello World!")
+        .end((err) => {
+          if (err) {
+            t.error(err, "Got error: " + err);
+          }
+          t.end();
+        });
+    })
+    .catch((err) => t.fail(err));
+});
+
+tape("Finds any fitting template (test.pug)", (t) => {
+  appFactory(testBConfig)
+    .then((app) => {
+      supertest(app)
+        .get("/test")
+        .query({ thing: "World" })
+        .expect(200, "PUG World!")
         .end((err, res) => {
           if (err) {
             t.error(err, "Got error: " + err);
@@ -57,10 +93,11 @@ tape("Set BASE_PATH reaches test app", (t) => {
 });
 
 tape("A templates at any depth", (t) => {
-  appFactory(testConfig)
+  appFactory(testBConfig)
     .then((app) => {
       supertest(app)
         .get("/deeper/path")
+        .query({ thing: "World" })
         .expect(200, "DEEPER World")
         .end((err, res) => {
           if (err) {
@@ -73,7 +110,7 @@ tape("A templates at any depth", (t) => {
 });
 
 tape("Skips dot (.) paths at any depth", (t) => {
-  appFactory(testConfig)
+  appFactory(testBConfig)
     .then((app) => {
       supertest(app)
         .get("/.fragments/layout")
@@ -89,7 +126,7 @@ tape("Skips dot (.) paths at any depth", (t) => {
 });
 
 tape("Dot (.) paths work for includes", (t) => {
-  appFactory(testConfig)
+  appFactory(testBConfig)
     .then((app) => {
       supertest(app)
         .get("/pug")
@@ -108,7 +145,7 @@ tape("Dot (.) paths work for includes", (t) => {
 });
 
 tape("Responds with HTML file", (t) => {
-  appFactory(testConfig)
+  appFactory(testBConfig)
     .then((app) => {
       supertest(app)
         .get("/page")
@@ -127,7 +164,7 @@ tape("Responds with HTML file", (t) => {
 });
 
 tape("Responds with JS-generated result", (t) => {
-  appFactory(testConfig)
+  appFactory(testBConfig)
     .then((app) => {
       supertest(app)
         .get("/script")

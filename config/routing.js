@@ -106,6 +106,9 @@ module.exports = function (app) {
       } catch (e) {
         console.error(`Error loading index router from ${routerPath}:`, e);
       }
+    } else {
+      app.locals.debug &&
+        console.debug(`⚠️  No index router found at path: ${routerPath}`);
     }
   }
 
@@ -124,17 +127,22 @@ module.exports = function (app) {
         "..",
         app.locals.basePath,
         appInstance.trim(),
-        app.locals.viewPath,
-        "index.pug",
+        app.locals.viewPath
       );
-      app.locals.debug && console.debug(`Searching for: ${viewPath}`);
-      if (fs.existsSync(viewPath)) {
-        // Is there a home view here?
-        app.locals.debug &&
-          console.debug(`ℹ️  Mounting ${viewPath} as home view`);
-        app.get("/", middleware.setFoundRoute);
-        break;
-      }
+
+      app.get("/", middleware.serveEverythingFrom(viewPath));
+      break;
+      // app.locals.debug && console.debug(`Searching for: ${viewPath}`);
+      // if (fs.existsSync(viewPath)) {
+      //   // Is there a home view here?
+      //   app.locals.debug &&
+      //     console.debug(`ℹ️  Mounting ${viewPath} as home view`);
+      //   app.get("/", middleware.setFoundRoute);
+      //   break;
+      // } else {
+      //   app.locals.debug && console.debug(`⚠️  No home view found - 404s ahead!`);
+      // }
+
       // else {
       //   // Otherwise use a default "Hello World!" response
       //   app.get("/", (_req, res) => {

@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const router = express.Router({ mergeParams: true });
 
 module.exports = function (app) {
@@ -13,7 +14,8 @@ module.exports = function (app) {
   });
 
   // The default template is: "index"
-  router.route("/").get(middleware.serveEverything);
+  const routeRoot = path.join(__dirname, "..", "views");
+  router.route("/").get(middleware.serveEverythingFrom(routeRoot));
 
   return router;
 };
