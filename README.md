@@ -14,7 +14,8 @@ Seedpod is a modest, no-magic Javascript web framework that prioritizes clarity,
 ## Installation
 
 ```sh
-git clone git@github.com:TravColbert/node-express-starter.git
+git clone https://github.com/TravColbert/seedpod.git
+cd seedpod
 npm install
 ```
 
