@@ -39,7 +39,7 @@ You can run your application locally for development using several ways:
 
 ### Node
 
-The most direct way is to run your application directly **node**:
+The most direct way is to run your application directly through **node**:
 
 ```
 node server
